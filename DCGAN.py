@@ -167,7 +167,7 @@ for epoch in range(num_epochs):
         # 训练判别器用真实图片
         real_cpu = data[0].to(device)  # 取一批真实图片，放到设备上（GPU/CPU）
         batch_size = real_cpu.size(0)  # 这批次的大小
-        label = torch.full((batch_size,), real_label, device=device)  # 真实标签全1
+        label = torch.full((batch_size,), real_label, device=device, dtype=torch.float)  # 真实标签全1
 
         output = netD(real_cpu)  # 判别器判别真实图像
         errD_real = criterion(output, label)  # 计算判别器对真实图的损失
