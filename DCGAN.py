@@ -6,6 +6,8 @@ import torch.optim as optim
 import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
+from torch.utils.data import Dataset
+from PIL import Image
 
 # 设置训练参数
 dataroot = "/content/drive/MyDrive/VisDrone2019-Patch/awning-tricycle"
@@ -30,6 +32,23 @@ torch.manual_seed(manualSeed)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Using device:", device)
 
+class CustomImageDataset(Dataset):
+    def __init__(self, image_dir, transform=None):
+        self.image_paths = [os.path.join(image_dir, f)
+                            for f in os.listdir(image_dir)
+                            if f.lower().endswith((".jpg", ".jpeg", ".png"))]
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    def __getitem__(self, idx):
+        img = Image.open(self.image_paths[idx]).convert("RGB")
+        if self.transform:
+            img = self.transform(img)
+        return img, 0  # 第二个值随便写，因为 DCGAN 不需要 label
+
+
 # 1. 定义图像预处理流程
 transform = transforms.Compose([
     transforms.Resize(image_size),       # 缩放图像为64x64
@@ -40,7 +59,7 @@ transform = transforms.Compose([
 ])
 
 # 2. 加载数据集（ImageFolder默认会自动按文件夹分类，但你这里每个文件夹是一个类别）
-dataset = dset.ImageFolder(root=dataroot, transform=transform)
+dataset = CustomImageDataset(dataroot, transform=transform)
 
 # 3. 构造DataLoader，batch大小和线程数由超参数控制
 dataloader = torch.utils.data.DataLoader(dataset,
