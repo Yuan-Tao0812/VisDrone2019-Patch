@@ -3,9 +3,9 @@ import cv2
 import shutil
 
 # 配置路径
-image_dir = '/content/drive/MyDrive/VisDrone2019-DET/VisDrone2019-DET-train/images'
-anno_dir = '/content/drive/MyDrive/VisDrone2019-DET/VisDrone2019-DET-train/annotations'
-patch_save_dir = '/content/drive/MyDrive/VisDrone2019-Patch'
+image_dir = 'D:/resource/dissertation/dataset-VisDrone2019-DET/VisDrone2019-DET-train/images'
+anno_dir = 'D:/resource/dissertation/dataset-VisDrone2019-DET/VisDrone2019-DET-train/annotations'
+patch_save_dir = 'D:/resource/dissertation/dataset-VisDrone2019-DET/VisDrone2019-Patch'
 
 # 创建保存路径
 os.makedirs(patch_save_dir, exist_ok=True)
